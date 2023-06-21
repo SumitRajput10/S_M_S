@@ -161,17 +161,6 @@ AUTH_USER_MODEL = "student_management_app.CustomUser"
 # Registering Custom Backend "EmailBackEnd"
 AUTHENTICATION_BACKENDS = ['student_management_app.EmailBackEnd.EmailBackEnd']
 
-
-
-
-# # For twilio Authentication
-# ACCOUNT_SID = 'ACe541744eb5682c16aa097253689b16b9'
-# AUTH_TOKEN = '1fe8cf466d7c233f94566ffd30613433'
-# COUNTRY_CODE = '+91'
-# # TWILIO_WHATSAPP_NUMBER = 'whatsapp:+14155238886'
-# TWILIO_PHONE_NUMBER = '+13203628764'
-
-
 # Registering Custom Backend "EmailBackEnd"
 # AUTHENTICATION_BACKENDS = ['student_management_app.EmailBackEnd.EmailBackEnd']
 
