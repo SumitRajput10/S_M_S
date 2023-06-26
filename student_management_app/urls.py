@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . views import *
 from . import views
+# from your_app.views import ProfileView
 # from . import HodViews, StaffViews, StudentViews
 
 urlpatterns = [
@@ -11,6 +12,14 @@ urlpatterns = [
     path('doLogin/', doLogin.as_view(), name="doLogin"),
     # path('get_user_details/', get_user_details.as_view(), name="get_user_details"),
     path('logout_user/', logout_user.as_view(), name="logout_user"),
+
+    # Profile Update
+    # path('profile', views.profile, name='profile'),
+    # path('profile/update', views.profile_update, name='profile_update'),
+    path('profile/', ProfileView.as_view(), name='profile'),
+
+
+
 ]
 
 

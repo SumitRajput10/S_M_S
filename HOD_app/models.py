@@ -11,7 +11,7 @@ class AdminHOD(models.Model):
 
 
 class StudentFees(models.Model):
-    student = models.ForeignKey("Student_app.Students", related_name= "studentfees", on_delete=models.CASCADE)
+    student = models.ForeignKey("Student_app.Students", related_name="studentfees", on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     # due_date = models.DateField()
     is_paid = models.BooleanField(default=False)

@@ -12,6 +12,9 @@ class SessionYearModel(models.Model):
     session_start_year = models.DateField()
     session_end_year = models.DateField()
 
+    def __str__(self):
+        return f"{self.session_start_year} To {self.session_end_year}"
+
 
 
 # Overriding the Default Django Auth User and adding One More Field (user_type)
@@ -30,16 +33,20 @@ class CustomUser(AbstractUser):
         (3, "Student"),
     )
     user_type = models.CharField(choices=USER_TYPE_CHOICES, default=1, max_length=10)
-    # profile_pic = models.ImageField(upload_to='media/profile_pic')
+    profile_pic = models.ImageField(upload_to='media/profile_pic', default="{% url static '/assets/img/profiles/default_avatar.jpg' %}")
 
 
 class Courses(models.Model):
     course_name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.course_name
+
+
 
 class Subjects(models.Model):
     subject_name = models.CharField(max_length=255)
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='subjects')
+    course_id = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='subjects')
     staff = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subjects')
 
 
@@ -98,27 +105,27 @@ class StudentResult(models.Model):
     subject_exam_marks = models.FloatField(default=0)
     subject_assignment_marks = models.FloatField(default=0)
 
-
-#Creating Django Signals
-# It's like trigger in database. It will run only when Data is Added in CustomUser model
-
-@receiver(post_save, sender=CustomUser)
-# Now Creating a Function which will automatically insert data in HOD, Staff or Student
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    # if Created is true (Means Data Inserted) or else
-    if created:
-        # Check the user_type and insert the data in respective tables
-        if instance.user_type == 1:
-            AdminHOD.objects.create(admin=instance)
-        elif instance.user_type == 2:
-            Staffs.objects.create(admin=instance)
-        elif instance.user_type == 3:
-            Students.objects.create(admin=instance)
-    else:
-        # Check the user_type and save the data in respective tables
-        if instance.user_type == 1:
-            instance.adminhod.save()
-        elif instance.user_type == 2:
-            instance.staffs.save()
-        elif instance.user_type == 3:
-            instance.students.save()
+#
+# #Creating Django Signals
+# # It's like trigger in database. It will run only when Data is Added in CustomUser model
+#
+# @receiver(post_save, sender=CustomUser)
+# # Now Creating a Function which will automatically insert data in HOD, Staff or Student
+# def create_or_update_user_profile(sender, instance, created, **kwargs):
+#     # if Created is true (Means Data Inserted) or else
+#     if created:
+#         # Check the user_type and insert the data in respective tables
+#         if instance.user_type == 1:
+#             AdminHOD.objects.create(admin=instance)
+#         elif instance.user_type == 2:
+#             Staffs.objects.create(admin=instance)
+#         elif instance.user_type == 3:
+#             Students.objects.create(admin=instance)
+#     else:
+#         # Check the user_type and save the data in respective tables
+#         if instance.user_type == 1:
+#             instance.adminhod.save()
+#         elif instance.user_type == 2:
+#             instance.staffs.save()
+#         elif instance.user_type == 3:
+#             instance.students.save()
