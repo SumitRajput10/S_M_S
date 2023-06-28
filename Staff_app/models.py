@@ -8,3 +8,6 @@ class Staffs(models.Model):
     gender = models.CharField(max_length=50)
     address = models.TextField()
     phone_number = models.IntegerField()
+
+    def __str__(self):
+        return self.admin.username

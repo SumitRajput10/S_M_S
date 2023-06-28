@@ -19,21 +19,22 @@ class About(View):
     def get(self, request):
         return render(request, "about.html")
 
+class Base(View):
+    def get(self, request):
+        return render(request, "base.html")
 
-
-
-def Base(request):
-    return render(request, 'base.html')
+# def Base(request):
+#     return render(request, 'base.html')
 
 class loginPage(View):
     def get(self, request):
         return render(request, 'login.html')
 
 class doLogin(View):
-    def post(self, request):
-        if request.method != "POST":
-            return HttpResponse("<h2>Method Not Allowed</h2>")
+    def get(self, request):
+        return HttpResponse("<h2>Method Not Allowed</h2>")
 
+    def post(self, request):
         user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
         print(user)
         if user:
@@ -54,13 +55,35 @@ class doLogin(View):
 
 
 
+# class doLogin(View):
+#     def post(self, request):
+#         if request.method != "POST":
+#             return HttpResponse("<h2>Method Not Allowed</h2>")
+#
+#         user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
+#         print(user)
+#         if user:
+#             login(request, user)
+#             user_type = user.user_type
+#             if user_type == '1':
+#                 # return HttpResponse("HOD Login")
+#                 return redirect('HOD_app:hod_home')
+#             elif user_type == '2':
+#                 return HttpResponse("Staff Login")
+#                 # return redirect('staff_home')
+#             elif user_type == '3':
+#                 return HttpResponse("Student Login")
+#                 # return redirect('student_home')
+#
+#         messages.error(request, "Invalid Login Credentials!")
+#         return redirect('login')
+
+
+
 class logout_user(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect('/')
-
-
-
 
 class ProfileView(View):
     @staticmethod

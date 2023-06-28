@@ -5,41 +5,41 @@
                   <div class="col-sm-12">
                      <div class="card">
                         <div class="card-body">
-                           <form method="post" action="{% url 'HOD_app:update_student' %}" enctype="multipart/form-data">
+                           <form method="post" action="{% url 'HOD_app:update_staff' %}" enctype="multipart/form-data">
                                {% csrf_token %}
                                  <div class="col-12">
-                                    <h5 class="form-title"><span>Edit Student</span></h5>
+                                    <h5 class="form-title"><span>Edit Staff</span></h5>
                                  </div>
                                 {% include 'includes/messages.html' %}
                                  <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Profile Pic</label>
                                        <input type="file" class="form-control" name="profile_pic" >
-                                       <input type="text" class="form-control" name="student_id" value="{% for students in student %}{{students.admin.id}}{% endfor %}" hidden>
+                                       <input type="text" class="form-control" name="staff_id" value="{% for staffs in staff %}{{staffs.admin.id}}{% endfor %}" hidden>
                                     </div>
                                  </div>
                                  <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>First Name</label>
-                                       <input type="text" class="form-control" name="first_name" value="{% for students in student %}{{students.admin.first_name}}{% endfor %}" required>
+                                       <input type="text" class="form-control" name="first_name" value="{% for staffs in staff %}{{staffs.admin.first_name}}{% endfor %}" required>
                                     </div>
                                  </div>
                                  <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Last Name</label>
-                                       <input type="text" class="form-control" name="last_name" value="{% for students in student %}{{students.admin.last_name}}{% endfor %}" required>
+                                       <input type="text" class="form-control" name="last_name" value="{% for staffs in staff %}{{staffs.admin.last_name}}{% endfor %}" required>
                                     </div>
                                  </div>
                                   <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Email</label>
-                                       <input type="text" class="form-control" name="email" value="{% for students in student %}{{students.admin.email}}{% endfor %}" required readonly>
+                                       <input type="text" class="form-control" name="email" value="{% for staffs in staff %}{{staffs.admin.email}}{% endfor %}" required readonly>
                                     </div>
                                  </div>
                                   <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Username</label>
-                                       <input type="text" class="form-control" name="username" value="{% for students in student %}{{students.admin.username}}{% endfor %}" required readonly>
+                                       <input type="text" class="form-control" name="username" value="{% for staffs in staff %}{{staffs.admin.username}}{% endfor %}" required readonly>
                                     </div>
                                  </div>
                                   <div class="col-12 col-sm-12">
@@ -51,14 +51,14 @@
                                 <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Address</label>
-                                       <textarea class="form-control" name="address" required>{% for students in student %}{{students.address}}{% endfor %}</textarea>
+                                       <textarea class="form-control" name="address" >{% for staffs in staff %}{{staffs.address}}{% endfor %}</textarea>
                                     </div>
                                  </div>
 
                                 <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Gender</label>
-                                       <select class="form-control" name="gender" required>
+                                       <select class="form-control" name="gender" >
                                            <option>Select Gender</option>
 <!--                                          <option>{% for students in student %}{{students.gender}}{% endfor %}</option>-->
                                           <option value="Female">Female</option>
@@ -69,29 +69,13 @@
                                  </div>
                                 <div class="col-12 col-sm-12">
                                     <div class="form-group">
-                                       <label>Courses</label>
-                                       <select class="form-control" name="course_id" required>
-                                          <option>Select Course</option>
-<!--                                           <option>{% for students in student %}{{students.course_name}}{% endfor %}</option>-->
-                                           {% for courses in course %}
-                                          <option value="{{courses.id}}">{{courses.course_name}}</option>
-                                           {% endfor %}
-                                       </select>
+                                       <label>Phone Number</label>
+                                       <input class="form-control" name="phone_number" value="{% for staffs in staff %}{{staffs.phone_number}}{% endfor %}" required>
                                     </div>
                                  </div>
-                                <div class="col-12 col-sm-12">
-                                    <div class="form-group">
-                                       <label>Session Year</label>
-                                       <select class="form-control" name="session_year_id" required>
-                                          <option>Select Session Year</option>
-                                           {% for session_years in session_year %}
-                                          <option value="{{session_years.id}}">{{session_years.session_start_year}} To {{session_years.session_end_year}}</option>
-                                           {% endfor %}
-                                       </select>
-                                    </div>
-                                 </div>
+
                                  <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Update Student</button>
+                                    <button type="submit" class="btn btn-primary">Update Staff</button>
                                  </div>
 
                            </form>
