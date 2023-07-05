@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+
 <div class="content container-fluid">
                <div class="page-header">
                   <div class="row align-items-center">
                      <div class="col">
-                        <h3 class="page-title">Courses</h3>
+                        <h3 class="page-title">Send Staff Notifications</h3>
                         <ul class="breadcrumb">
                            <li class="breadcrumb-item"><a href="{% url 'HOD_app:hod_home' %}">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Courses</li>
+                           <li class="breadcrumb-item active">Send Staff Notifications</li>
                         </ul>
                      </div>
 
                      <div class="col-auto text-right float-right ml-auto">
                         <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                        <a href="{% url 'HOD_app:add_course' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                        <a href="{% url 'HOD_app:add_session' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
                      </div>
                   </div>
                </div>
@@ -28,22 +29,24 @@
                                  <thead>
                                     <tr>
                                        <th>ID</th>
-                                       <th>Name</th>
+                                       <th>Session Start Year</th>
+                                       <th>Session End Year</th>
                                        <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 {% for courses in course %}
+                                 {% for sessions in session %}
                                     <tr>
-                                       <td>{{courses.id}}</td>
-                                       <td>{{courses.course_name}}</td>
+                                       <td>{{sessions.id}}</td>
+                                       <td>{{sessions.session_start_year}}</td>
+                                       <td>{{sessions.session_end_year}}</td>
 
                                        <td class="text-right">
                                           <div class="actions">
-                                             <a href="{% url 'HOD_app:edit_course' courses.id %}" class="btn btn-sm bg-success-light mr-2">
+                                             <a href="{% url 'HOD_app:edit_session' sessions.id %}" class="btn btn-sm bg-success-light mr-2">
                                              <i class="fas fa-pen"></i>
                                              </a>
-                                             <a href="{% url 'HOD_app:delete_course' courses.id %}" class="btn btn-sm bg-danger-light">
+                                             <a href="{% url 'HOD_app:delete_session' sessions.id %}"  class="btn btn-sm bg-danger-light">
                                              <i class="fas fa-trash"></i>
                                              </a>
                                           </div>

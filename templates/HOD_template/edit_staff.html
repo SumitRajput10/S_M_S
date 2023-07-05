@@ -60,7 +60,9 @@
                                        <label>Gender</label>
                                        <select class="form-control" name="gender" >
                                            <option>Select Gender</option>
-<!--                                          <option>{% for students in student %}{{students.gender}}{% endfor %}</option>-->
+                                           {% for staffs in staff %}
+                                           <option value="{{staffs.gender}}" {% if forloop.first %}selected{% endif %}>{{staffs.gender}}</option>
+                                           {% endfor %}
                                           <option value="Female">Female</option>
                                           <option value="Male">Male</option>
                                           <option value="Others">Others</option>

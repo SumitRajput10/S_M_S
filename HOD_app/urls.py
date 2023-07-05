@@ -27,4 +27,32 @@ urlpatterns = [
     path('Hod/Staff/Edit/<str:id>', EditStaffView.as_view(), name="edit_staff"),
     path('Hod/Staff/Update', UpdateStaffView.as_view(), name="update_staff"),
     path('Hod/Staff/Delete/<str:admin>', DeleteStaffView.as_view(), name="delete_staff"),
+
+    # Subjects
+    path('Hod/Subject/Add', AddSubjectView.as_view(), name="add_subject"),
+    path('Hod/Subject/View', ViewSubjectView.as_view(), name="view_subject"),
+    path('Hod/Subject/Edit/<str:id>', EditSubjectView.as_view(), name="edit_subject"),
+    path('Hod/Subject/Update', UpdateSubjectView.as_view(), name="update_subject"),
+    path('Hod/Subject/Delete/<str:id>', DeleteSubjectView.as_view(), name="delete_subject"),
+
+    # Session
+    path('Hod/Session/Add', AddSessionView.as_view(), name="add_session"),
+    path('Hod/Session/View', ViewSessionView.as_view(), name="view_session"),
+    path('Hod/Session/Edit/<str:id>', EditSessionView.as_view(), name="edit_session"),
+    path('Hod/Session/Update', UpdateSessionView.as_view(), name="update_session"),
+    path('Hod/Session/Delete/<str:id>', DeleteSessionView.as_view(), name="delete_session"),
+
+    # Notifications
+    path('Hod/Staff/Send_Notification/View', StaffSendNotification.as_view(), name="staff_send_notification"),
+    path('Hod/Staff/Save_Notification', SaveStaffNotification.as_view(), name="save_staff_notification"),
+
+    # Leave View
+    path('Hod/Staff/Leave_view', StaffLeaveView.as_view(), name="staff_leave_view"),
+    path('Hod/Staff/approve_leave/<str:id>', StaffApproveLeaveView.as_view(), name="staff_approve_leave"),
+    path('Hod/Staff/disapprove_leave/<str:id>', StaffDisapproveLeaveView.as_view(), name="staff_disapprove_leave"),
+
+    # Feedback
+    path('Hod/Staff/Feedback_reply', StaffFeedbackView.as_view(), name="staff_feedback_reply"),
+    path('Hod/Staff/Feedback_reply_save', StaffFeedbackReplySaveView.as_view(), name="staff_feedback_reply_save"),
+
 ]

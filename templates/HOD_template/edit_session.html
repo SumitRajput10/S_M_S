@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+
+            <div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Edit Session</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="{% url 'HOD_app:add_session' %}">Session</a></li>
+                           <li class="breadcrumb-item active">Edit Session</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               {% include 'includes/messages.html' %}
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card">
+                        <div class="card-body">
+                           <form action="{% url 'HOD_app:update_session' %}" method="post">
+                              {% csrf_token %}
+                              <div class="row">
+                                 <div class="col-12">
+                                    <h5 class="form-title"><span>Session Information</span></h5>
+                                 </div>
+                                 <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Session Year Start</label>
+                                       <div>
+                                          <input type="hidden" class="form-control" name="session_id" value="{% for sessions in session %}{{sessions.id}}{% endfor %}" required>
+                                          <input type="date" class="form-control" name="session_start_year" value="{% for sessions in session %}{sessions.session_start_year}{% endfor %}" required>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                       <label>Session Year End</label>
+                                       <div>
+                                          <input type="date" class="form-control" name="session_end_year" value="{% for sessions in session %}{sessions.session_end_year}{% endfor %}" required>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary">Edit Session</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+{% endblock %}

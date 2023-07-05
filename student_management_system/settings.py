@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     "HOD_app",
     "Staff_app",
     "Student_app",
+
+    # For sidebar active link
+    "active_link",
     # "verification",
 ]
 

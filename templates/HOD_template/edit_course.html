@@ -14,8 +14,8 @@
                                  <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Course Name</label>
-                                       <input type="text" class="form-control" name="course_name" value="{{courses.course_name}}" required>
-                                       <input type="text" class="form-control" name="course_id " value="{{courses.id}}" hidden>
+                                       <input type="text" class="form-control" name="course_name" value="{% for courses in course %}{{courses.course_name}}{% endfor %}" required>
+                                       <input type="hidden" class="form-control" name="course_id" value="{% for courses in course %}{{courses.id}}{% endfor %}" required>
                                     </div>
                                  </div>
                                  <div class="col-12">

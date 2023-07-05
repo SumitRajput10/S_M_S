@@ -8,22 +8,22 @@ from Student_app.models import Students
 
 
 
+
+
+# Overriding the Default Django Auth User and adding One More Field (user_type)
+class Common(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        abstract = True
+
 class SessionYearModel(models.Model):
     session_start_year = models.DateField()
     session_end_year = models.DateField()
 
     def __str__(self):
         return f"{self.session_start_year} To {self.session_end_year}"
-
-
-
-# Overriding the Default Django Auth User and adding One More Field (user_type)
-class Common(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
 
 
 class CustomUser(AbstractUser):
@@ -36,7 +36,7 @@ class CustomUser(AbstractUser):
     profile_pic = models.ImageField(upload_to='media/profile_pic', default="{% url static '/assets/img/profiles/default_avatar.jpg' %}")
 
 
-class Courses(models.Model):
+class Courses(Common):
     course_name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -44,62 +44,74 @@ class Courses(models.Model):
 
 
 
-class Subjects(models.Model):
+class Subjects(Common):
     subject_name = models.CharField(max_length=255)
     course_id = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='subjects')
     staff = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subjects')
 
+    def __str__(self):
+        return self.subject_name
 
-class Attendance(models.Model):
+class Attendance(Common):
     subject = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING, related_name='attendances')
     attendance_date = models.DateField()
     session_year = models.ForeignKey(SessionYearModel, on_delete=models.CASCADE)
 
 
-class AttendanceReport(models.Model):
+class AttendanceReport(Common):
     # Individual Student Attendance
     student = models.ForeignKey("Student_app.Students", on_delete=models.DO_NOTHING, related_name='attendance_reports')
     attendance = models.ForeignKey(Attendance, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
 
-class LeaveReportStudent(models.Model):
+class LeaveReportStudent(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     leave_date = models.CharField(max_length=255)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
 
 
-class LeaveReportStaff(models.Model):
+class LeaveReportStaff(Common):
     staff = models.ForeignKey("Staff_app.Staffs", on_delete=models.CASCADE)
     leave_date = models.CharField(max_length=255)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.staff.admin.first_name + " " + self.staff.admin.last_name
 
-class FeedBackStudent(models.Model):
+
+class FeedBackStudent(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     feedback = models.TextField()
     feedback_reply = models.TextField()
 
 
-class FeedBackStaffs(models.Model):
+class FeedBackStaffs(Common):
     staff = models.ForeignKey("Staff_app.Staffs", on_delete=models.CASCADE)
     feedback = models.TextField()
     feedback_reply = models.TextField()
 
+    def __str__(self):
+        return self.staff.admin.first_name + " " + self.staff.admin.last_name
 
-class NotificationStudent(models.Model):
+
+class NotificationStudent(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     message = models.TextField()
 
 
-class NotificationStaffs(models.Model):
+class NotificationStaffs(Common):
     staff = models.ForeignKey("Staff_app.Staffs", on_delete=models.CASCADE)
     message = models.TextField()
+    status = models.IntegerField(null=True, default=0)
+
+    def __str__(self):
+        return self.staff.admin.first_name
 
 
-class StudentResult(models.Model):
+class StudentResult(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
     subject_exam_marks = models.FloatField(default=0)

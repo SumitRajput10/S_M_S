@@ -1,0 +1,214 @@
+<script>
+
+  $(document).ready(function() {
+
+    //  Chart  All Details
+
+    var options = {
+          series: [{{student_count}}, {{staff_count}}, {{subject_count}}, {{course_count}}],
+          chart: {
+          height: 365,
+		  width: '100%',
+          type: 'radialBar',
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 270,
+            hollow: {
+              margin: 5,
+              size: '30%',
+              background: 'transparent',
+              image: undefined,
+            },
+            dataLabels: {
+              name: {
+                show: false,
+              },
+              value: {
+                show: false,
+              }
+            }
+          }
+        },
+        colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
+        labels: ['Students', 'Staffs', 'Subjects', 'Courses'],
+        legend: {
+          show: true,
+          floating: true,
+          fontSize: '16px',
+          position: 'left',
+          offsetX: 160,
+          offsetY: 15,
+          labels: {
+            useSeriesColors: true,
+          },
+          markers: {
+            size: 0
+          },
+          formatter: function(seriesName, opts) {
+            return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+          },
+          itemMargin: {
+            vertical: 3
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            legend: {
+                show: false
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#All_details"), options);
+        chart.render();
+
+
+	// Bar chart
+
+	if ($('#student_gender').length > 0) {
+	var optionsBar = {
+		chart: {
+			type: 'bar',
+			height: 350,
+			width: '100%',
+			stacked: true,
+			toolbar: {
+				show: false
+			},
+		},
+		dataLabels: {
+			enabled: false
+		},
+		plotOptions: {
+			bar: {
+				columnWidth: '45%',
+			}
+		},
+		series: [{
+			name: "Boys",
+			color: '#fdbb38',
+			data: [{{student_gender_male}}],
+		}, {
+			name: "Girls",
+			color: '#19affb',
+			data: [{{student_gender_female}}],
+		}],
+		labels: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+		xaxis: {
+			labels: {
+				show: false
+			},
+			axisBorder: {
+				show: false
+			},
+			axisTicks: {
+				show: false
+			},
+		},
+		yaxis: {
+			axisBorder: {
+				show: false
+			},
+			axisTicks: {
+				show: false
+			},
+			labels: {
+				style: {
+					colors: '#777'
+				}
+			}
+		},
+		title: {
+			text: '',
+			align: 'left',
+			style: {
+				fontSize: '18px'
+			}
+		}
+
+	}
+
+	var chartBar = new ApexCharts(document.querySelector('#student_gender'), optionsBar);
+	chartBar.render();
+	}
+
+	// Student and Staff (Donut Chart)
+
+        var options = {
+          series: [{{student_count}}, {{staff_count}}],
+          chart: {
+          height: 350,
+		  width: '100%',
+          type: 'donut',
+        },
+        plotOptions: {
+          pie: {
+            startAngle: -90,
+            endAngle: 270
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        fill: {
+          type: 'gradient',
+        },
+        legend: {
+          formatter: function(val, opts) {
+            return val + " - " + opts.w.globals.series[opts.seriesIndex]
+          }
+        },
+        labels: ['Students', 'Staffs'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#student_staff"), options);
+        chart.render();
+
+
+    // Pie chart
+
+        var options = {
+          series: [{{subject_count}}, {{course_count}}],
+          chart: {
+          height: 350,
+		  width: '100%',
+          type: 'pie',
+        },
+        labels: ['Subjects', 'Courses'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#course_subject"), options);
+        chart.render();
+
+
+});
+
+
+</script>

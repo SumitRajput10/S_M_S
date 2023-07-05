@@ -5,15 +5,22 @@ from .forms import UserRegistrationForm, LoginForm
 from student_management_app.EmailBackEnd import EmailBackEnd
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
+from Student_app.models import Students
+from Staff_app.models import Staffs
+from .models import Courses, Subjects
 
 
 
 
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
 class Home(View):
     def get(self, request):
-        return render(request, "home.html")
+       return render(request, "home.html")
 
 class About(View):
     def get(self, request):
@@ -36,7 +43,7 @@ class doLogin(View):
 
     def post(self, request):
         user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
-        print(user)
+        # print(user)
         if user:
             login(request, user)
             user_type = user.user_type
@@ -44,11 +51,11 @@ class doLogin(View):
                 # return HttpResponse("HOD Login")
                 return redirect('HOD_app:hod_home')
             elif user_type == '2':
-                return HttpResponse("Staff Login")
-                # return redirect('staff_home')
+                # return HttpResponse("Staff Login")
+                return redirect('Staff_app:staff_home')
             elif user_type == '3':
                 return HttpResponse("Student Login")
-                # return redirect('student_home')
+                # return redirect('Student_app:student_home')
 
         messages.error(request, "Invalid Login Credentials!")
         return redirect('login')
