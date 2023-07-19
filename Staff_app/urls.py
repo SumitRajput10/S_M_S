@@ -23,6 +23,17 @@ urlpatterns = [
     path('Staff/Feedback', StaffFeedbackView.as_view(), name="staff_feedback"),
     path('Staff/Feedback_save', StaffFeedbackSaveView.as_view(), name="staff_feedback_save"),
 
+    # Attendance
+    # path('Staff/Take_Attendance', StaffTakeAttendanceView.as_view(), name="staff_take_attendance"),
+    # path('Staff/Attendance_save', StaffAttendanceSaveView.as_view(), name="staff_attendance_save"),
+    # path('Staff/Attendance_update', StaffAttendanceUpdateView.as_view(), name="staff_attendance_update"),
+    # path('Staff/Attendance_delete', StaffAttendanceDeleteView.as_view(), name="staff_attendance_delete"),
+    path('Staff/Take_Attendance', views.StaffTakeAttendance, name='staff_take_attendance'),
+    path('Staff/Save_Attendance', views.StaffSaveAttendance, name='staff_save_attendance'),
+    path('Staff/View_Attendance', views.StaffViewAttendance, name='staff_view_attendance'),
 
+    # Result
+    path('Staff/Add/Result', StaffAddResultView.as_view(), name="staff_add_result"),
+    path('Staff/Save/Result', StaffSaveResultView.as_view(), name="staff_save_result"),
 
 ]

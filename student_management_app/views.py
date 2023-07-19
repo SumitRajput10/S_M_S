@@ -54,8 +54,8 @@ class doLogin(View):
                 # return HttpResponse("Staff Login")
                 return redirect('Staff_app:staff_home')
             elif user_type == '3':
-                return HttpResponse("Student Login")
-                # return redirect('Student_app:student_home')
+                # return HttpResponse("Student Login")
+                return redirect('Student_app:student_home')
 
         messages.error(request, "Invalid Login Credentials!")
         return redirect('login')

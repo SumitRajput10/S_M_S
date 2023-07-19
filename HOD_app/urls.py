@@ -42,17 +42,33 @@ urlpatterns = [
     path('Hod/Session/Update', UpdateSessionView.as_view(), name="update_session"),
     path('Hod/Session/Delete/<str:id>', DeleteSessionView.as_view(), name="delete_session"),
 
-    # Notifications
-    path('Hod/Staff/Send_Notification/View', StaffSendNotification.as_view(), name="staff_send_notification"),
+    # Staff Notifications
+    path('Hod/Staff/Send_Notification', StaffSendNotification.as_view(), name="staff_send_notification"),
     path('Hod/Staff/Save_Notification', SaveStaffNotification.as_view(), name="save_staff_notification"),
 
-    # Leave View
+    # Student Notification
+    path('Hod/Student/Send_Notification', StudentSendNotification.as_view(), name="student_send_notification"),
+    path('Hod/Student/Save_Notification', SaveStudentNotification.as_view(), name="save_student_notification"),
+
+    # Staff Leave View
     path('Hod/Staff/Leave_view', StaffLeaveView.as_view(), name="staff_leave_view"),
     path('Hod/Staff/approve_leave/<str:id>', StaffApproveLeaveView.as_view(), name="staff_approve_leave"),
     path('Hod/Staff/disapprove_leave/<str:id>', StaffDisapproveLeaveView.as_view(), name="staff_disapprove_leave"),
 
-    # Feedback
+    # Staff Feedback
     path('Hod/Staff/Feedback_reply', StaffFeedbackView.as_view(), name="staff_feedback_reply"),
     path('Hod/Staff/Feedback_reply_save', StaffFeedbackReplySaveView.as_view(), name="staff_feedback_reply_save"),
+
+    # Student Feedback
+    path('Hod/Student/Feedback_reply', StudentFeedbackView.as_view(), name="student_feedback_reply"),
+    path('Hod/Student/Feedback_reply_save', StudentFeedbackReplySaveView.as_view(), name="student_feedback_reply_save"),
+
+    # Student Leave View
+    path('Hod/Student/Leave_view', StudentLeaveView.as_view(), name="student_leave_view"),
+    path('Hod/Student/approve_leave/<str:id>', StudentApproveLeaveView.as_view(), name="student_approve_leave"),
+    path('Hod/Student/disapprove_leave/<str:id>', StudentDisapproveLeaveView.as_view(), name="student_disapprove_leave"),
+
+    # Attendance
+    path('Hod/View/Attendance', views.ViewAttendance, name="view_attendance"),
 
 ]

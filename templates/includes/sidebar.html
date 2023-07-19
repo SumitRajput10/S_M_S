@@ -9,7 +9,7 @@
                         <span>Main Menu</span>
                      </li>
                       <li class="{% active_link 'HOD_app:hod_home' 'active' %}">
-                        <a href="{% url 'HOD_app:hod_home' %}"><i class="fas fa-user-graduate"></i> <span>Dashboard</span></a>
+                        <a href="{% url 'HOD_app:hod_home' %}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
                      </li>
                      <li class="submenu {% active_link 'HOD_app:add_student' 'active' %} {% active_link 'HOD_app:view_student' 'active' %}">
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
@@ -50,22 +50,23 @@
                         <a href="{% url 'HOD_app:staff_send_notification' %}"><i class="fa fa-bell"></i> <span>Send Staff Notification</span></a>
                      </li>
                      <li>
-                        <a href="holiday.html"><i class="fa fa-bell"></i> <span>Send Student Notification</span></a>
+                        <a href="{% url 'HOD_app:student_send_notification' %}"><i class="fa fa-bell"></i> <span>Send Student Notification</span></a>
                      </li>
                      <li>
-                        <a href="holiday.html"><i class="fa fa-calendar"></i> <span>View Attendance</span></a>
+                        <li class="{% active_link 'HOD_app:view_attendance' 'active' %}">
+                        <a href="{% url 'HOD_app:view_attendance' %}"><i class="fa fa-calendar-alt"></i> <span>View Attendance</span></a>
                      </li>
                      <li>
                         <a href="{% url 'HOD_app:staff_feedback_reply' %}"><i class="fas fa-comments"></i> <span>Staff Feedback</span></a>
                      </li>
                      <li>
-                        <a href="holiday.html"><i class="fas fa-comments"></i> <span>Student Feedback</span></a>
+                        <a href="{% url 'HOD_app:student_feedback_reply' %}"><i class="fas fa-comments"></i> <span>Student Feedback</span></a>
                      </li>
                      <li>
                         <a href="{% url 'HOD_app:staff_leave_view' %}"><i class="fas fa-envelope"></i> <span>Staff Leave</span></a>
                      </li>
                      <li>
-                        <a href="holiday.html"><i class="fas fa-envelope"></i> <span>Student Leave</span></a>
+                        <a href="{% url 'HOD_app:student_leave_view' %}"><i class="fas fa-envelope"></i> <span>Student Leave</span></a>
                      </li>
                      <li>
                         <a href="{% url 'logout_user' %}"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
@@ -78,24 +79,24 @@
                         <span>Main Menu</span>
                      </li>
                       <li class="{% active_link 'Staff_app:staff_home' 'active' %}">
-                        <a href="{% url 'HOD_app:hod_home' %}"><i class="fas fa-user-graduate"></i> <span>Dashboard</span></a>
+                        <a href="{% url 'Staff_app:staff_home' %}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
                      </li>
-                     <li class="{% active_link 'Staff_app:hod_home' 'active' %}">
-                        <a href="{% url 'HOD_app:hod_home' %}"><i class="fas fa-calendar-alt"></i> <span>Take Attendance</span></a>
+                     <li class="{% active_link 'Staff_app:staff_take_attendance' 'active' %}">
+                        <a href="{% url 'Staff_app:staff_take_attendance' %}"><i class="fas fa-calendar-alt"></i> <span>Take Attendance</span></a>
                      </li>
-                     <li class="{% active_link 'HOD_app:hod_home' 'active' %}">
-                        <a href="{% url 'HOD_app:hod_home' %}"><i class="fas fa-calendar-alt"></i> <span>View/update Attendance</span></a>
+                     <li class="{% active_link 'Staff_app:staff_view_attendance' 'active' %}">
+                        <a href="{% url 'Staff_app:staff_view_attendance' %}"><i class="fas fa-calendar-alt"></i> <span>View/update Attendance</span></a>
                      </li>
-                     <li class="{% active_link 'HOD_app:hod_home' 'active' %}">
-                        <a href="{% url 'HOD_app:hod_home' %}"><i class="fas fa-poll-h"></i> <span>Add Result</span></a>
+                     <li class="{% active_link 'Staff_app:staff_add_result' 'active' %}">
+                        <a href="{% url 'Staff_app:staff_add_result' %}"><i class="fas fa-poll-h"></i> <span>Add Result</span></a>
                      </li>
                      <li class="{% active_link 'Staff_app:staff_apply_leave' 'active' %}">
                         <a href="{% url 'Staff_app:staff_apply_leave' %}"><i class="fas fa-envelope-open"></i> <span>Apply for Leave</span></a>
                      </li>
-                     <li class="{% active_link 'HOD_app:hod_home' 'active' %}">
+                     <li class="{% active_link 'Staff_app:staff_feedback' 'active' %}">
                         <a href="{% url 'Staff_app:staff_feedback' %}"><i class="fas fa-comment"></i> <span>Send Feedback</span></a>
                      </li>
-                     <li class="{% active_link 'notifications' 'active' %}">
+                     <li class="{% active_link 'Staff_app:notifications' 'active' %}">
                         <a href="{% url 'Staff_app:notifications' %}"><i class="fas fa-bell"></i> <span>Notifications</span></a>
                      </li>
                      <li>
@@ -103,9 +104,35 @@
                      </li>
 
                   </ul>
-
                   {% else %}
-                  <h1>Student Panel</h1>
+                  <ul>
+                     <li class="menu-title">
+                        <span>Main Menu</span>
+                     </li>
+                      <li class="{% active_link 'Student_app:student_home' 'active' %}">
+                        <a href="{% url 'Student_app:student_home' %}"><i class="fas fa-holly-berry"></i> <span>Dashboard</span></a>
+                     </li>
+                     <li>
+                        <li class="{% active_link 'Student_app:student_view_attendance' 'active' %}">
+                        <a href="{% url 'Student_app:student_view_attendance' %}"><i class="fa fa-calendar-alt" aria-hidden="true"></i> <span>View Attendance</span></a>
+                     </li>
+                     <li>
+                        <li class="{% active_link 'Student_app:view_result' 'active' %}">
+                        <a href="{% url 'Student_app:view_result' %}"><i class="fa fa-poll" aria-hidden="true"></i> <span>View Result</span></a>
+                     </li>
+                      <li class="{% active_link 'Student_app:student_apply_leave' 'active' %}">
+                        <a href="{% url 'Student_app:student_apply_leave' %}"><i class="fas fa-envelope-open"></i> <span>Apply for Leave</span></a>
+                     </li>
+                     <li class="{% active_link 'Student_app:student_feedback' 'active' %}">
+                        <a href="{% url 'Student_app:student_feedback' %}"><i class="fas fa-comment"></i> <span>Send Feedback</span></a>
+                     </li>
+                     <li class="{% active_link 'Student_app:notifications' 'active' %}">
+                        <a href="{% url 'Student_app:notifications' %}"><i class="fas fa-bell"></i> <span>Notifications</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'logout_user' %}"><i class="fa fa-sign-out-alt" aria-hidden="true"></i> <span>Logout</span></a>
+                     </li>
+                  </ul>
                   {% endif %}
                </div>
             </div>

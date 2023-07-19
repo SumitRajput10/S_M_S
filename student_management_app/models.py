@@ -57,6 +57,8 @@ class Attendance(Common):
     attendance_date = models.DateField()
     session_year = models.ForeignKey(SessionYearModel, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.subject.subject_name
 
 class AttendanceReport(Common):
     # Individual Student Attendance
@@ -64,12 +66,18 @@ class AttendanceReport(Common):
     attendance = models.ForeignKey(Attendance, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.student.admin.first_name
+
 
 class LeaveReportStudent(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     leave_date = models.CharField(max_length=255)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.student.admin.first_name + " " + self.student.admin.last_name
 
 
 class LeaveReportStaff(Common):
@@ -86,12 +94,18 @@ class FeedBackStudent(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     feedback = models.TextField()
     feedback_reply = models.TextField()
+    status = models.IntegerField(null=True, default=0)
+
+    def __str__(self):
+        return self.student.admin.first_name + " " + self.student.admin.last_name
+
 
 
 class FeedBackStaffs(Common):
     staff = models.ForeignKey("Staff_app.Staffs", on_delete=models.CASCADE)
     feedback = models.TextField()
     feedback_reply = models.TextField()
+    status = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return self.staff.admin.first_name + " " + self.staff.admin.last_name
@@ -100,7 +114,10 @@ class FeedBackStaffs(Common):
 class NotificationStudent(Common):
     student = models.ForeignKey("Student_app.Students", on_delete=models.CASCADE)
     message = models.TextField()
+    status = models.IntegerField(null=True, default=0)
 
+    def __str__(self):
+        return self.student.admin.first_name
 
 class NotificationStaffs(Common):
     staff = models.ForeignKey("Staff_app.Staffs", on_delete=models.CASCADE)
@@ -116,6 +133,9 @@ class StudentResult(Common):
     subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
     subject_exam_marks = models.FloatField(default=0)
     subject_assignment_marks = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.student.admin.first_name + " " + self.student.admin.last_name
 
 #
 # #Creating Django Signals

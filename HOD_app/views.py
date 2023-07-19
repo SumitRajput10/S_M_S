@@ -8,9 +8,12 @@ from Staff_app.models import Staffs
 from student_management_app.models import Courses, SessionYearModel, CustomUser, Students, Subjects
 from django.contrib import messages
 # from student_management_app.models import Subjects, Courses, Attendance, LeaveReportStaff, LeaveReportStudent, FeedBackStudent, FeedBackStaffs, LeaveReportStudent, SessionYearModel, Attendance, AttendanceReport, CustomUser
-from student_management_app.models import NotificationStaffs, LeaveReportStaff, FeedBackStaffs
+from student_management_app.models import NotificationStaffs, LeaveReportStaff, FeedBackStaffs, NotificationStudent, LeaveReportStudent, FeedBackStudent, Attendance, AttendanceReport
 
 
+# For downloading
+import xlwt
+from django.http import HttpResponse
 
 
 
@@ -432,7 +435,7 @@ class UpdateSubjectView(View):
         course = Courses.objects.get(id=course_id)
         course.course_id = course_id
         subject.staff_id = staff_id
-        print(subject_id, subject_name, course_id, staff_id)
+        # print(subject_id, subject_name, course_id, staff_id)
         subject.save()
         messages.success(request, "Record Updated Successfully!")
         return redirect('HOD_app:view_subject')
@@ -492,8 +495,6 @@ class UpdateSessionView(View):
         session_start_year = request.POST.get('session_start_year')
         session_end_year = request.POST.get('session_end_year')
 
-        print(session_end_year, session_start_year, session_id)
-
         session = SessionYearModel.objects.get(id=session_id)
         session.session_start_year = session_start_year
         session.session_end_year = session_end_year
@@ -527,9 +528,7 @@ class SaveStaffNotification(View):
         staff = request.POST.get('staff_id')
         message = request.POST.get('message')
 
-        print(staff, message)
         staff = Staffs.objects.get(id=staff).id
-        print(staff)
         notification = NotificationStaffs(staff_id=staff, message=message)
         notification.save()
         messages.success(request, "Notification Sent Successfully!")
@@ -565,8 +564,11 @@ class StaffDisapproveLeaveView(View):
 class StaffFeedbackView(View):
     def get(self, request):
         feedback = FeedBackStaffs.objects.all()
+        feedback_history = FeedBackStaffs.objects.all().order_by('-id')[0:5]
+
         context = {
             'feedback': feedback,
+            'feedback_history': feedback_history
         }
         return render(request, "HOD_template/staff_feedback.html", context)
 
@@ -578,5 +580,189 @@ class StaffFeedbackReplySaveView(View):
 
         feedback = FeedBackStaffs.objects.get(id=feedback_id)
         feedback.feedback_reply = feedback_reply
+        feedback.status = 1
         feedback.save()
         return redirect('HOD_app:staff_feedback_reply')
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class StudentSendNotification(View):
+    def get(self, request):
+        student = Students.objects.all()
+        see_notification = NotificationStudent.objects.all().order_by('-id')[0:5]
+
+        context = {
+            'student': student,
+            'see_notification': see_notification,
+        }
+        return render(request, "HOD_template/student_notification.html", context)
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class SaveStudentNotification(View):
+    def post(self, request):
+        student = request.POST.get('student_id')
+        message = request.POST.get('message')
+
+        student = Students.objects.get(id=student).id
+        notification = NotificationStudent(student_id=student, message=message)
+        notification.save()
+        messages.success(request, "Notification Sent Successfully!")
+        return redirect('HOD_app:student_send_notification')
+
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class StudentFeedbackView(View):
+    def get(self, request):
+        feedback = FeedBackStudent.objects.all()
+        feedback_history = FeedBackStudent.objects.all().order_by('-id')[0:5]
+        context = {
+            'feedback': feedback,
+            'feedback_history': feedback_history,
+        }
+        return render(request, "HOD_template/student_feedback.html", context)
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class StudentFeedbackReplySaveView(View):
+    def post(self, request):
+        feedback_id = request.POST.get('feedback_id')
+        feedback_reply = request.POST.get('feedback_reply')
+
+        feedback = FeedBackStudent.objects.get(id=feedback_id)
+        feedback.feedback_reply = feedback_reply
+        feedback.status = 1
+        feedback.save()
+        return redirect('HOD_app:student_feedback_reply')
+
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class StudentLeaveView(View):
+    def get(self, request):
+        student_leave = LeaveReportStudent.objects.all()
+        context = {
+            'student_leave': student_leave,
+        }
+        return render(request, "HOD_template/student_leave.html", context)
+
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class StudentApproveLeaveView(View):
+    def get(self, request, id):
+        leave = LeaveReportStudent.objects.get(id=id)
+        leave.leave_status = 1
+        leave.save()
+        return redirect('HOD_app:student_leave_view')
+
+@method_decorator(login_required(login_url=reverse_lazy('login')), name='dispatch')
+class StudentDisapproveLeaveView(View):
+    def get(self, request, id):
+        leave = LeaveReportStudent.objects.get(id=id)
+        leave.leave_status = 2
+        leave.save()
+        return redirect('HOD_app:student_leave_view')
+
+
+def ViewAttendance(request):
+    subject = Subjects.objects.all()
+    session_year = SessionYearModel.objects.all()
+
+    action = request.GET.get('action')
+
+    get_subject = None
+    get_session_year = None
+    attendance_date = None
+    attendance_report = None
+
+    if action is not None:
+        if request.method == "POST":
+            subject_id = request.POST.get('subject_id')
+            session_year_id = request.POST.get('session_year_id')
+            attendance_date = request.POST.get('attendance_date')
+
+            get_subject = Subjects.objects.get(id=subject_id)
+            get_session_year = SessionYearModel.objects.get(id=session_year_id)
+            attendance = Attendance.objects.filter(
+                subject=get_subject,
+                attendance_date=attendance_date,
+            )
+            for attendances in attendance:
+                attendance = attendances.id
+                attendance_report = AttendanceReport.objects.filter(
+                    attendance_id=attendance,
+                )
+
+    context = {
+        "subjects": subject,
+        "session_year": session_year,
+        "action": action,
+        "get_subject": get_subject,
+        "get_session_year": get_session_year,
+        "attendance_date": attendance_date,
+        "attendance_report": attendance_report,
+    }
+    return render(request, "HOD_template/view_attendance.html", context)
+
+
+
+
+
+
+
+
+
+
+
+# For Download Excel Sheet
+# def download_excel_data(request):
+#     # dummy data
+#     def get_data():
+#         data = [
+#             ['Column 1', 'Column 2', 'Column 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#             ['Value 1', 'Value 2', 'Value 3'],
+#         ]
+#         return data
+#
+#     # create a HttpResponse object and write the required excel data into it.
+#     response = HttpResponse(content_type='application/ms-excel')
+#     response['Content-Disposition'] = 'attachment; filename="ThePythonDjango.xls"'
+#     wb = xlwt.Workbook(encoding='utf-8')
+#     ws = wb.add_sheet('sheet1')
+#     # Sheet header, first row
+#     row_num = 0
+#     font_style = xlwt.XFStyle()
+#     font_style.font.bold = True
+#     columns = ['Column 1', 'Column 2', 'Column 3']
+#     for col_num in range(len(columns)):
+#         ws.write(row_num, col_num, columns[col_num], font_style)
+#         # Sheet body, remaining rows
+#         font_style = xlwt.XFStyle()
+#         rows = get_data()
+#         for row_num in range(1, len(rows)):
+#             for col_num in range(len(rows[row_num])):
+#                 ws.write(row_num, col_num, rows[row_num][col_num], font_style)
+#                 # save the file
+#                 wb.save(response)
+#                 return response
+#                 # return response
+#                 # return HttpResponse(response)
+#                 # return response
+
+
+
+
+
+
+
+
+

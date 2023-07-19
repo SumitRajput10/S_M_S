@@ -71,7 +71,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">History</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -90,13 +90,13 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 {% for see_notifications in see_notification %}
+                                 {% for feedback_historys in feedback_history %}
                                     <tr>
-                                       <td>{{see_notifications.message}}</td>
-                                        {% if see_notifications.status == 0 %}
-                                        <td><span class="badge badge-danger">UnRead the Message</span></td>
+                                       <td>{{feedback_historys.feedback}}</td>
+                                        {% if feedback_historys.status == 0 %}
+                                        <td><span class="badge badge-danger">No Reply</span></td>
                                         {% else %}
-                                        <td><span class="badge badge-success">Read the Message</span></td>
+                                        <td>{{feedback_historys.feedback_reply}}</td>
                                         {% endif %}
 
 
@@ -112,7 +112,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
       </div>
     </div>
   </div>

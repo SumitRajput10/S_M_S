@@ -73,7 +73,7 @@
                                 <div class="col-12 col-sm-12">
                                     <div class="form-group">
                                        <label>Courses</label>
-                                       <select class="form-control" name="course_id" required>
+                                       <select class="form-control" name="course_id" value={{courses.course_name}} required>
                                           <option>Select Course</option>
                                            {% for courses in course %}
                                           <option value="{{courses.id}}">{{courses.course_name}}</option>
